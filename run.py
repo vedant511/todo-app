@@ -7,7 +7,7 @@ app.config.from_pyfile('config.py')
 
 @app.route('/')
 def home():
-    return "Hello, World!"
+    return render_template('home.html')
 
 
 @app.route('/welcome')
@@ -21,4 +21,4 @@ def login():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
