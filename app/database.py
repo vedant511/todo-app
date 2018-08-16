@@ -13,12 +13,11 @@ class Database(object):
         Database.DATABASE = client['HomeMate_db']
 
     @staticmethod
-    def insert_one(collection, data):
-        Database.DATABASE[collection].insert(data)
-
-    @staticmethod
-    def insert_many(collection, data_list):
-        Database.DATABASE[collection].insert_many(data_list)
+    def insert(collection, data):
+        if type(data) == dict:
+            Database.DATABASE[collection].insert(data)
+        elif type(data) == list:
+            Database.DATABASE[collection].insert_many(data)
 
     @staticmethod
     def find_one(collection, query):
