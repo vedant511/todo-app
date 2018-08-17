@@ -7,19 +7,14 @@ app.config.from_object('config')  # Uncomment this in Production
 app.config.from_pyfile('config.py')  # Uncomment this during development and staging
 
 
-@app.route('/')
-def home():
-    return render_template('home.html')
-
-
-@app.route('/welcome')
-def welcome():
-    return render_template('welcome.html')
-
-
 @app.before_first_request
 def initialize_database():
     Database.initialize()
+
+
+@app.route('/')
+def home():
+    return render_template('home.html')
 
 
 @app.route('/login')
@@ -27,12 +22,15 @@ def login():
     return render_template('login.html')
 
 
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+
 @app.route('/auth/login', methods=['POST'])
 def login_user():
     identifier = request.form['email']
     password = request.form['password']
-
-    print(identifier, password)
 
     if User.login(identifier, password):
         print("A")
@@ -45,12 +43,29 @@ def login_user():
             user = User.get_by_unm(identifier)
             print("A2pass")
 
-        return render_template('profile.html', name=user['name'])
+        return render_template('profile.html', name=user.name)
 
     else:
         print("B")
         error = "Invalid credentials, please try again or register"
         return render_template('login.html', error=error)
+
+
+@app.route('/auth/register', methods=['POST'])
+def register_user():
+    if request.form["submit"] == "login":
+        return render_template("login.html")
+
+    name = request.form['name']
+    email = request.form['email']
+    password = request.form['password']
+    username = request.form['username']
+
+    if User.register(name, email, password, username):
+        return render_template("profile.html", name=name)
+    else:
+        error = "Email or username already exists, sign in instead"
+        return render_template("register.html", error=error)
 
 
 if __name__ == "__main__":

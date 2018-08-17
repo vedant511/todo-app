@@ -1,55 +1,66 @@
 from app.database import Database
+from flask import session
 
 
 class User(object):
 
-    def __init__(self, name, email, pwd, username):
+    def __init__(self, name, email, pwd, username, _id=None):
         self.name = name
         self.email = email
         self.pwd = pwd
         self.username = username
+        self._id = _id
 
     @classmethod
     def get_by_mail(cls, email):
         data = Database.find_one("users", {"email": email})
-        if data is not None or data is False:
+        if data is not None:
             return cls(**data)
 
     @classmethod
     def get_by_unm(cls, username):
         data = Database.find_one("users", {"username": username})
-        if data is not None or data is False:
+        if data is not None:
             return cls(**data)
 
     @classmethod
     def get_by_id(cls, _id):
         data = Database.find_one("users", {"_id": _id})
-        if data is not None or data is False:
+        if data is not None:
             return cls(**data)
 
     @classmethod
     def register(cls, name, email, pwd, username):
-        if cls.get_by_mail(email) is not None or cls.get_by_unm(username) is not None:
-            return False
-
-        else:
+        if cls.get_by_mail(email) is None and cls.get_by_unm(username) is None:
             new_user = cls(name, email, pwd, username)
             Database.insert('users', new_user.json())
+            session['email'] = email
             return True
+        else:
+            # User already exists
+            return False
 
     @classmethod
     def login(cls, identifier, password):
         if cls.get_by_mail(identifier) is not None:
             user = cls.get_by_mail(identifier)
-            return user.pwd == password
+            if user.pwd == password:
+                session['email'] = user.email
+                return True
 
         elif cls.get_by_unm(identifier) is not None:
             user = cls.get_by_unm(identifier)
-            return user.pwd == password
+            if user.pwd == password:
+                session['email'] = user.email
+                return True
 
         else:
             # User does not exist
             return False
+
+    @staticmethod
+    def logout():
+        session['email'] = None
 
     def json(self):
         return{

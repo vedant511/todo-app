@@ -10,7 +10,8 @@ class Database(object):
 
     @staticmethod
     def initialize():
-        client = MongoClient(Database.URI, connect=False)
+        client = MongoClient(Database.URI)
+        # client = MongoClient('localhost', 27017)
         Database.DATABASE = client['test']
 
     @staticmethod
@@ -22,18 +23,11 @@ class Database(object):
 
     @staticmethod
     def find_one(collection, query):
-        print(Database.DATABASE.collection_names())
-        if collection not in Database.DATABASE.collection_names():
-            return False
-        else:
-            return Database.DATABASE[collection].find_one(query)
+        return Database.DATABASE[collection].find_one(query)
 
     @staticmethod
     def find_many(collection, query):
-        if collection not in Database.DATABASE.collection_names():
-            return False
-        else:
-            return Database.DATABASE[collection].find(query)
+        return Database.DATABASE[collection].find(query)
 
     @staticmethod
     def delete_one(collection, query):
