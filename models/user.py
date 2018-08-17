@@ -12,19 +12,19 @@ class User(object):
     @classmethod
     def get_by_mail(cls, email):
         data = Database.find_one("users", {"email": email})
-        if data is not None:
+        if data is not None or data is False:
             return cls(**data)
 
     @classmethod
     def get_by_unm(cls, username):
         data = Database.find_one("users", {"username": username})
-        if data is not None:
+        if data is not None or data is False:
             return cls(**data)
 
     @classmethod
     def get_by_id(cls, _id):
         data = Database.find_one("users", {"_id": _id})
-        if data is not None:
+        if data is not None or data is False:
             return cls(**data)
 
     @classmethod

@@ -1,6 +1,7 @@
 import pymongo
 from pymongo import MongoClient
-import config as cfg
+# import config as cfg  # Uncomment in Production
+import instance.config as cfg  # Uncomment in Development
 
 
 class Database(object):
@@ -9,8 +10,8 @@ class Database(object):
 
     @staticmethod
     def initialize():
-        client = MongoClient(Database.URI)
-        Database.DATABASE = client['HomeMate_db']
+        client = MongoClient(Database.URI, connect=False)
+        Database.DATABASE = client['test']
 
     @staticmethod
     def insert(collection, data):
@@ -21,11 +22,18 @@ class Database(object):
 
     @staticmethod
     def find_one(collection, query):
-        return Database.DATABASE[collection].find_one(query)
+        print(Database.DATABASE.collection_names())
+        if collection not in Database.DATABASE.collection_names():
+            return False
+        else:
+            return Database.DATABASE[collection].find_one(query)
 
     @staticmethod
     def find_many(collection, query):
-        return Database.DATABASE[collection].find(query)
+        if collection not in Database.DATABASE.collection_names():
+            return False
+        else:
+            return Database.DATABASE[collection].find(query)
 
     @staticmethod
     def delete_one(collection, query):
