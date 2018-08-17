@@ -31,14 +31,19 @@ class User(object):
 
     @classmethod
     def register(cls, name, email, pwd, username):
-        if cls.get_by_mail(email) is None and cls.get_by_unm(username) is None:
-            new_user = cls(name, email, pwd, username)
-            Database.insert('users', new_user.json())
-            session['email'] = email
-            return True
-        else:
-            # User already exists
-            return False
+        if name == "" or email == "" or pwd == "" or username == "":
+            return "All fields are required"
+
+        if cls.get_by_mail(email):
+            return "This Email is already registered, please Login to continue"
+
+        if cls.get_by_unm(username):
+            return "This Username is already taken, please select a different one"
+
+        new_user = cls(name, email, pwd, username)
+        Database.insert('users', new_user.json())
+        session['email'] = email
+        return "Registered"
 
     @classmethod
     def login(cls, identifier, password):

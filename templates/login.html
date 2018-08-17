@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+<br/>
+<br/>
 <div class="container page-form">
     <form id="login-form" action="/auth/login" method="post">
         <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Email or Username</label>
             <input type="text" id="email" class="form-control" name="email">
         </div>
         <div class="form-group">
@@ -13,7 +15,14 @@
 
         <button type="submit" class="btn btn-success">Log in</button>
     </form>
+    <br/>
+    {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+    {% endif %}
+    <br/>
+    <p>Click <a href="/register">here</a> to Register</p>
 </div>
+
 <br/>
-<p>Click <a href="/">here</a> to Logout</p>
+
 {% endblock %}
