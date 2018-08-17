@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+<br/>
+<br/>
 <div class="container page-form">
     <form id="login-form" action="/auth/register" method="post">
         <div class="form-group">
@@ -19,8 +21,13 @@
             <input type="text" id="username" class="form-control" name="username">
         </div>
 
-        <button type="submit" class="btn btn-success" name="submit" value="register">Sign up</button>
-        <button type="submit" class="btn btn-success" name="submit" value="login">Sign in</button>
+        <button type="submit" class="btn btn-success" name="submit" value="register">Register</button>
+        <button type="submit" class="btn btn-success" name="submit" value="login">Login</button>
+        <br/>
+        <br/>
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
     </form>
 </div>
 {% endblock %}

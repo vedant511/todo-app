@@ -33,20 +33,15 @@ def login_user():
     password = request.form['password']
 
     if User.login(identifier, password):
-        print("A")
         if User.get_by_mail(identifier) is not None:
-            print("A1")
             user = User.get_by_mail(identifier)
-            print("A1pass")
+
         else:
-            print("A2")
             user = User.get_by_unm(identifier)
-            print("A2pass")
 
         return render_template('profile.html', name=user.name)
 
     else:
-        print("B")
         error = "Invalid credentials, please try again or register"
         return render_template('login.html', error=error)
 
@@ -61,10 +56,13 @@ def register_user():
     password = request.form['password']
     username = request.form['username']
 
-    if User.register(name, email, password, username):
+    user = User.register(name, email, password, username)
+
+    if user == "Registered":
         return render_template("profile.html", name=name)
+
     else:
-        error = "Email or username already exists, sign in instead"
+        error = user
         return render_template("register.html", error=error)
 
 
