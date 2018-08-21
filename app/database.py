@@ -10,8 +10,8 @@ class Database(object):
 
     @staticmethod
     def initialize():
-        # client = MongoClient(Database.URI)
-        client = MongoClient('localhost', 27017)
+        client = MongoClient(Database.URI)
+        # client = MongoClient('localhost', 27017)
         Database.DATABASE = client['test']
 
     @staticmethod
