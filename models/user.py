@@ -4,12 +4,13 @@ from flask import session
 
 class User(object):
 
-    def __init__(self, name, email, pwd, username, _id=None):
+    def __init__(self, name, email, pwd, username, _id=None, isAdmin=0):
         self.name = name
         self.email = email
         self.pwd = pwd
         self.username = username
         self._id = _id
+        self.isAdmin = isAdmin
 
     @classmethod
     def get_by_mail(cls, email):
@@ -33,6 +34,8 @@ class User(object):
     def register(cls, name, email, pwd, username):
         if name == "" or email == "" or pwd == "" or username == "":
             return "All fields are required"
+
+        # Put Email and Password restrictions here
 
         if cls.get_by_mail(email):
             return "This Email is already registered, please Login to continue"
@@ -73,4 +76,5 @@ class User(object):
             "email": self.email,
             "pwd": self.pwd,
             "username": self.username,
+            "isAdmin": self.isAdmin
         }

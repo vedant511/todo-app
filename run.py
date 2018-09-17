@@ -39,7 +39,10 @@ def login_user():
         else:
             user = User.get_by_unm(identifier)
 
-        return render_template('profile.html', name=user.name)
+        if user.isAdmin:
+            return render_template('admin.html', name=user.name)
+        else:
+            return render_template('profile.html', name=user.name)
 
     else:
         error = "Invalid credentials, please try again or register"
