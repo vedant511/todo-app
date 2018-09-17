@@ -1,5 +1,6 @@
 from app.database import Database
 from flask import session
+import re
 
 
 class User(object):
@@ -35,7 +36,11 @@ class User(object):
         if name == "" or email == "" or pwd == "" or username == "":
             return "All fields are required"
 
-        # Put Email and Password restrictions here
+        if len(pwd) not in range(6, 17):
+            return 'Password must be 6-16 characters long'
+
+        if not re.match(r'(.)+(@)(.)+(\.)(.)+', email):
+            return 'Email Address you entered is invalid'
 
         if cls.get_by_mail(email):
             return "This Email is already registered, please Login to continue"
