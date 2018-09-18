@@ -1,9 +1,12 @@
 from app.database import Database
 from flask import session
+from flask_bcrypt import Bcrypt
 import re
 
 
 class User(object):
+
+    bcrypt = Bcrypt()
 
     def __init__(self, name, email, pwd, username, _id=None, isAdmin=0):
         self.name = name
@@ -48,7 +51,9 @@ class User(object):
         if cls.get_by_unm(username):
             return "This Username is already taken, please select a different one"
 
-        new_user = cls(name, email, pwd, username)
+        hashed_pwd = User.bcrypt.generate_password_hash(pwd).decode('utf-8')
+
+        new_user = cls(name, email, hashed_pwd, username)
         Database.insert('users', new_user.json())
         session['email'] = email
         return "Registered"
@@ -57,13 +62,13 @@ class User(object):
     def login(cls, identifier, password):
         if cls.get_by_mail(identifier) is not None:
             user = cls.get_by_mail(identifier)
-            if user.pwd == password:
+            if User.bcrypt.check_password_hash(user.pwd, password):
                 session['email'] = user.email
                 return True
 
         elif cls.get_by_unm(identifier) is not None:
             user = cls.get_by_unm(identifier)
-            if user.pwd == password:
+            if User.bcrypt.check_password_hash(user.pwd, password):
                 session['email'] = user.email
                 return True
 
