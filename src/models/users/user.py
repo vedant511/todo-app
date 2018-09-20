@@ -67,7 +67,7 @@ class User(object):
                 session['email'] = user.email
                 return True
             else:
-                raise UserErrors.InvalidPasswordError('Password is wrong, please double check')
+                raise UserErrors.InvalidPasswordError('Username or Password is incorrect, please try again')
 
         elif cls.get_by_unm(identifier) is not None:
             user = cls.get_by_unm(identifier)
@@ -75,7 +75,7 @@ class User(object):
                 session['email'] = user.email
                 return True
             else:
-                raise UserErrors.InvalidPasswordError('Password is wrong, please double check')
+                raise UserErrors.InvalidPasswordError('Username or Password is incorrect, please try again')
 
         else:
             raise UserErrors.UserNotExistsError('This User does not exist, please register to continue')

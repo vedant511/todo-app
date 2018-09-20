@@ -3,7 +3,7 @@
 <br/>
 <br/>
 <div class="container page-form">
-    <form id="login-form" action="/auth/login" method="post">
+    <form id="login-form" action="{{ url_for('users.login') }}" method="post">
         <div class="form-group">
             <label for="email">Email or Username</label>
             <input type="text" id="email" class="form-control" name="email">
@@ -20,7 +20,7 @@
         <p class="error"><strong>Error:</strong> {{ error }}</p>
     {% endif %}
     <br/>
-    <p>Click <a href="/register">here</a> to Register</p>
+    <p>Not a TODO user? <a href="{{ url_for('users.register') }}">Register</a> to get started!</p>
 </div>
 
 <br/>

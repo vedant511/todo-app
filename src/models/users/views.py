@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, url_for
+from flask import Blueprint, render_template, request, session, url_for, flash
 from src.models.users.user import User
 import src.models.users.errors as UserErrors
 
@@ -24,12 +24,12 @@ def login():
                     user = User.get_by_unm(identifier)
 
                 if user.isAdmin:
-                    return render_template('admin.html', name=user.name)
+                    return render_template('users/admin.html', name=user.name)
                 else:
-                    return render_template('profile.html', name=user.name)
+                    return render_template('users/profile.html', name=user.name)
 
         except UserErrors.UserError as e:
-            error = e.message
+            error = e
             return render_template('users/login.html', error=error)
 
     return render_template('users/login.html')
@@ -38,10 +38,11 @@ def login():
 @user_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
 
-    if request.form["submit"] == "login":
-        return render_template("login.html")
-
     if request.method == 'POST':
+
+        if request.form["submit"] == "login":
+            return render_template("users/login.html")
+
         name = request.form['name']
         email = request.form['email']
         password = request.form['password']
@@ -50,10 +51,10 @@ def register():
         try:
             if User.register(name, email, password, username):
                 session['email'] = email
-                return render_template("profile.html", name=name)
+                return render_template("users/profile.html", name=name)
 
         except UserErrors.UserError as e:
-            error = e.message
+            error = e
             return render_template('users/register.html', error=error)
 
     return render_template('users/register.html')
@@ -61,9 +62,5 @@ def register():
 
 @user_blueprint.route('/logout')
 def logout_user():
-    pass
-
-
-@user_blueprint.route('/tasks')
-def get_user_tasks():
-    pass
+    session['email'] = None
+    return render_template('home.html')

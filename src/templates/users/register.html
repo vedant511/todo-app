@@ -3,7 +3,7 @@
 <br/>
 <br/>
 <div class="container page-form">
-    <form id="login-form" action="/auth/register" method="post">
+    <form id="login-form" action="{{ url_for('users.register') }}" method="post">
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" class="form-control" name="name">
@@ -21,13 +21,14 @@
             <input type="text" id="username" class="form-control" name="username">
         </div>
 
-        <button type="submit" class="btn btn-success" name="submit" value="register">Register</button>
-        <button type="submit" class="btn btn-success" name="submit" value="login">Login</button>
+        <button type="submit" class="btn btn-success" name="submit" value="register">Sign Up</button>
+        <!--<button type="submit" class="btn btn-success" name="submit" value="login">Login</button>-->
         <br/>
         <br/>
         {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}</p>
         {% endif %}
     </form>
+    <p>Already a User? <a href="{{ url_for('users.login') }}">Sign in</a></p>
 </div>
 {% endblock %}
