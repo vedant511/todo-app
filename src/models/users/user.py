@@ -1,4 +1,5 @@
-from app.database import Database
+from src.common.database import Database
+import src.models.users.errors as UserErrors
 from flask import session
 from flask_bcrypt import Bcrypt
 import re
@@ -37,26 +38,26 @@ class User(object):
     @classmethod
     def register(cls, name, email, pwd, username):
         if name == "" or email == "" or pwd == "" or username == "":
-            return "All fields are required"
+            raise UserErrors.EmptyFieldsError('All fields are required')
 
         if len(pwd) not in range(6, 17):
-            return 'Password must be 6-16 characters long'
+            raise UserErrors.InvalidPasswordError('Password must be 6-16 characters long')
 
-        if not re.match(r'(.)+(@)(.)+(\.)(.)+', email):
-            return 'Email Address you entered is invalid'
+        if not re.match(r'^[\w-]+@([\w-]+\.)+[\w]+$', email):
+            raise UserErrors.InvalidEmailError('Email address you entered is invalid')
 
         if cls.get_by_mail(email):
-            return "This Email is already registered, please Login to continue"
+            raise UserErrors.UserAlreadyRegisteredError('This Email is already registered, please Login instead')
 
         if cls.get_by_unm(username):
-            return "This Username is already taken, please select a different one"
+            raise UserErrors.UsernameTakenError('This Username is already taken, please select a different one')
 
         hashed_pwd = User.bcrypt.generate_password_hash(pwd).decode('utf-8')
 
         new_user = cls(name, email, hashed_pwd, username)
         Database.insert('users', new_user.json())
         session['email'] = email
-        return "Registered"
+        return True
 
     @classmethod
     def login(cls, identifier, password):
@@ -65,16 +66,19 @@ class User(object):
             if User.bcrypt.check_password_hash(user.pwd, password):
                 session['email'] = user.email
                 return True
+            else:
+                raise UserErrors.InvalidPasswordError('Password is wrong, please double check')
 
         elif cls.get_by_unm(identifier) is not None:
             user = cls.get_by_unm(identifier)
             if User.bcrypt.check_password_hash(user.pwd, password):
                 session['email'] = user.email
                 return True
+            else:
+                raise UserErrors.InvalidPasswordError('Password is wrong, please double check')
 
         else:
-            # User does not exist
-            return False
+            raise UserErrors.UserNotExistsError('This User does not exist, please register to continue')
 
     @staticmethod
     def logout():
