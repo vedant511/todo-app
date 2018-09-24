@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, url_for, flash
+from flask import Blueprint, render_template, request, session, url_for, redirect
 from src.models.users.user import User
 import src.models.users.errors as UserErrors
 
@@ -63,4 +63,14 @@ def register():
 @user_blueprint.route('/logout')
 def logout_user():
     session['email'] = None
-    return render_template('home.html')
+    return redirect(url_for('home'))
+
+
+@user_blueprint.route('/tasks')
+def get_tasks():
+    return redirect(url_for('users.get_tasks'))
+
+
+@user_blueprint.route('/profile')
+def home():
+    return redirect(url_for('users.home'))

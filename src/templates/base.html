@@ -31,8 +31,11 @@
 
             {% if session['email'] %}
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ url_for('users.tasks') }}"><span class="glyphicon glyphicon-tasks"></span>  My Tasks</a></li>
-                    <li><a href="{{ url_for('users.logout') }}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                    <li><a href="{{ url_for('users.logout_user') }}"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('users.get_tasks') }}"><span class="glyphicon glyphicon-tasks"></span>  My Tasks</a></li>
+                    <li><a href="{{ url_for('tasks.create_task') }}"><span class="glyphicon glyphicon-pencil"></span>  Create Task</a></li>
                 </ul>
             {% else %}
                 <ul class="nav navbar-nav navbar-right">

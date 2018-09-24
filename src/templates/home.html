@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-<br/>
-<br/>
-<h1 align="center" style="color:black"><b>TODO</b></h1>
-<br/>
-<br/>
-<h3 align="center" ><a href="{{ url_for('users.login') }}"><b>Sign in</b></a> or <a href="{{ url_for('users.login') }}"><b>Register</b></a></h3>
+<div class="jumbotron">
+    <h1>TODO</h1>
+    <p>Manage your daily tasks efficiently </p>
+    <p>We will remember your tasks and deadlines for you, while you focus only on your current work! </p>
+    <p><a class="btn btn-primary btn-lg" href="{{ url_for('users.register') }}" role="button">Get Started</a></p>
+</div>
 
 {% endblock %}

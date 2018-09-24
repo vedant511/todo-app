@@ -19,4 +19,6 @@ def home():
 
 
 from src.models.users.views import user_blueprint
+from src.models.tasks.views import task_blueprint
 app.register_blueprint(user_blueprint, url_prefix='/users')
+app.register_blueprint(task_blueprint, url_prefix='/tasks')

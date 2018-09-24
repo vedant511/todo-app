@@ -26,8 +26,12 @@ class Database(object):
         return Database.DATABASE[collection].find_one(query)
 
     @staticmethod
-    def find_many(collection, query):
+    def find_all(collection, query):
         return Database.DATABASE[collection].find(query)
+
+    @staticmethod
+    def update_one(collection, query, update):
+        return Database.DATABASE[collection].update_one(query, update)
 
     @staticmethod
     def delete_one(collection, query):

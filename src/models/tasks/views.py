@@ -7,7 +7,7 @@ task_blueprint = Blueprint('tasks', __name__)
 
 @task_blueprint.route('/new', methods=['POST'])
 def create_task():
-    pass
+    return render_template('tasks/create_task.html')
 
 
 @task_blueprint.route('/delete/<string:task_id>')

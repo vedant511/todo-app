@@ -1,4 +1,5 @@
 from src.common.database import Database
+from src.models.tasks.task import Task
 import src.models.users.errors as UserErrors
 from flask import session
 from flask_bcrypt import Bcrypt
@@ -19,25 +20,25 @@ class User(object):
 
     @classmethod
     def get_by_mail(cls, email):
-        data = Database.find_one("users", {"email": email})
+        data = Database.find_one('users', {'email': email})
         if data is not None:
             return cls(**data)
 
     @classmethod
     def get_by_unm(cls, username):
-        data = Database.find_one("users", {"username": username})
+        data = Database.find_one('users', {'username': username})
         if data is not None:
             return cls(**data)
 
     @classmethod
     def get_by_id(cls, _id):
-        data = Database.find_one("users", {"_id": _id})
+        data = Database.find_one('users', {'_id': _id})
         if data is not None:
             return cls(**data)
 
     @classmethod
     def register(cls, name, email, pwd, username):
-        if name == "" or email == "" or pwd == "" or username == "":
+        if name == '' or email == '' or pwd == '' or username == '':
             raise UserErrors.EmptyFieldsError('All fields are required')
 
         if len(pwd) not in range(6, 17):
@@ -84,11 +85,19 @@ class User(object):
     def logout():
         session['email'] = None
 
+    @staticmethod
+    def home():
+        pass
+
+    def get_tasks(self):
+        data = Task.get_by_user_id(self._id)
+        return data
+
     def json(self):
         return{
-            "name": self.name,
-            "email": self.email,
-            "pwd": self.pwd,
-            "username": self.username,
-            "isAdmin": self.isAdmin
+            'name': self.name,
+            'email': self.email,
+            'pwd': self.pwd,
+            'username': self.username,
+            'isAdmin': self.isAdmin
         }
