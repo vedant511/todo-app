@@ -7,7 +7,7 @@ class Task(object):
 
     def __init__(self, user_id, title, description, time_due, priority, time_remind, reminder_freq, group):
         self._id = None
-        self.user_id = user_id
+        self.user_id = user_id  # Email ID of the user to which task belongs
         self.title = title
         self.description = description
         self.timeAdded = datetime.datetime.utcnow()

@@ -51,7 +51,7 @@ def register():
         try:
             if User.register(name, email, password, username):
                 session['email'] = email
-                return render_template("users/home.html", name=name)
+                return render_template('users/home.html', name=name)
 
         except UserErrors.UserError as e:
             error = e

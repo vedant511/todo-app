@@ -12,3 +12,7 @@ class TaskNotExistsError(TaskError):
 
 class EmptyFieldsError(TaskError):
     pass
+
+
+class TimeFrameError(TaskError):
+    pass
