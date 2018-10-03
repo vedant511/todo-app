@@ -33,48 +33,22 @@ class Task(object):
         if data is not None:
             return cls(**data)
 
-    @classmethod
-    def get_by_user_id(cls, user_id):
-        data = Database.find_all('tasks', {'user_id': user_id})
-        if data is not None:
-            return cls(**data)
-
-    @classmethod
-    def get_by_keyword(cls, filter_query):
-        data = Database.find_all('tasks', filter_query)
-        if data is not None:
-            return cls(**data)
-
-    @classmethod
-    def get_by_priority(cls, priority):
-        data = Database.find_all('tasks', {'priority': priority})
-        if data is not None:
-            return cls(**data)
-
-    @classmethod
-    def get_by_group(cls, group):
-        data = Database.find_all('tasks', {'group': group})
-        if data is not None:
-            return cls(**data)
-
-    @classmethod
-    def get_completed(cls):
-        data = Database.find_all('tasks', {'isComplete': 1})
-        if data is not None:
-            return cls(**data)
-
-    @classmethod
-    def get_overdue(cls):
-        data = Database.find_all('tasks', {'isOverdue': 1})
-        if data is not None:
-            return cls(**data)
+    @staticmethod
+    def get_by_user_id(user_id):
+        data = list(Database.find_all('tasks', {'user_id': user_id}))
+        return data
 
     @staticmethod
-    def delete_by_id(task_id):
+    def get_by_filter(filter_query, project_query):
+        data = list(Database.find_all('tasks', filter_query, proj=project_query))
+        return data
+
+    @staticmethod
+    def delete_single(task_id):
         return Database.delete_one('tasks', {'_id': task_id})
 
     @staticmethod
-    def delete_by_condition(del_query):
+    def delete_multiple(del_query):
         return Database.delete_many('tasks', del_query)
 
     @staticmethod

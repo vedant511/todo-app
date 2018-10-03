@@ -2,7 +2,7 @@
 {% block content %}
 <br/>
 <br/>
-<div class="container page-form">
+<div class="form-size">
     <form id="login-form" action="{{ url_for('users.register') }}" method="post">
         <div class="form-group">
             <label for="name">Name</label>
@@ -25,7 +25,9 @@
         <br/>
         <br/>
         {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}</p>
+        <div class="alert alert-danger" role="alert">
+            <p class="error"><strong>Error:</strong> {{ error }}</p>
+        </div>
         {% endif %}
     </form>
     <p>Already a User? <a href="{{ url_for('users.login') }}">Sign in</a></p>

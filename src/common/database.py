@@ -26,8 +26,11 @@ class Database(object):
         return Database.DATABASE[collection].find_one(query)
 
     @staticmethod
-    def find_all(collection, query):
-        return Database.DATABASE[collection].find(query)
+    def find_all(collection, query, proj=None):
+        if proj is not None:
+            return Database.DATABASE[collection].find(query, proj)
+        else:
+            return Database.DATABASE[collection].find(query, proj)
 
     @staticmethod
     def update_one(collection, query, update):

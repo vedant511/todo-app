@@ -1,12 +1,18 @@
 from flask import Blueprint, render_template, request
+from src.models.tasks.task import Task
+import src.models.tasks.errors as TaskErrors
 
 __author__ = 'Vedant Sharma'
 
 task_blueprint = Blueprint('tasks', __name__)
 
 
-@task_blueprint.route('/new', methods=['POST'])
+@task_blueprint.route('/new', methods=['POST', 'GET'])
 def create_task():
+    if request.method == 'POST':
+        pass
+
+    # What happens if it's a GET request
     return render_template('tasks/create_task.html')
 
 
