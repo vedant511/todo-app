@@ -1,4 +1,5 @@
 from src.common.database import Database
+import src.models.tasks.errors as TaskErrors
 import re
 import datetime
 
@@ -22,7 +23,12 @@ class Task(object):
 
     @classmethod
     def create_task(cls, user_id, title, description, time_due, priority, time_remind, reminder_freq, group):
-        ## Check if time_remind is < time_due
+        if title == '' or description == '' or group == '' or time_remind == '' or time_due == '':
+            raise TaskErrors.EmptyFieldsError('All fields are required')
+
+        if time_remind >= time_due:
+            raise TaskErrors.TimeFrameError('Reminder time is after the due time')
+
         new_task = cls(user_id, title, description, time_due, priority, time_remind, reminder_freq, group)
         Database.insert('tasks', new_task.json())
         return True
