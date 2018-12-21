@@ -26,7 +26,8 @@ def login():
                 if user.isAdmin:
                     return render_template('users/admin.html', name=user.name)
                 else:
-                    return render_template('users/home.html', name=user.name)
+                    tasks = user.get_tasks()
+                    return render_template('users/home.html', name=user.name, tasks=tasks)
 
         except UserErrors.UserError as e:
             error = e
@@ -66,13 +67,18 @@ def logout_user():
     return redirect(url_for('home'))
 
 
-@user_blueprint.route('/tasks')
-def get_tasks():
-    return redirect(url_for('users.get_tasks'))
+# @user_blueprint.route('/tasks')
+# def get_tasks():
+#     user = User.get_by_mail(email=session['email'])
+#     tasks = User.get_tasks()
+#
+#     return redirect(url_for('users.get_tasks'))
 
 
 @user_blueprint.route('/home')
 def home():
     email = session['email']
     user = User.get_by_mail(email)
-    return render_template('users/home.html', name=user.name)
+    tasks = user.get_tasks()
+    print(tasks)
+    return render_template('users/home.html', name=user.name, tasks=tasks)

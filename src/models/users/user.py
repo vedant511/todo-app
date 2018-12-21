@@ -90,7 +90,7 @@ class User(object):
         pass
 
     def get_tasks(self):
-        data = Task.get_by_user_id(self._id)
+        data = Task.get_by_user_id(self.email)
         return data
 
     def json(self):
