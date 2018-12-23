@@ -80,5 +80,4 @@ def home():
     email = session['email']
     user = User.get_by_mail(email)
     tasks = user.get_tasks()
-    print(tasks)
     return render_template('users/home.html', name=user.name, tasks=tasks)

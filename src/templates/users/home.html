@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container profile">
-    <br/>
-    <br/>
-    <h1 align="center">Hello {{ name }} !</h1>
-    <h1 align="center">{{ tasks }}</h1>
-    <h3 align="center"><a href="{{ url_for('users.logout_user') }}"><b>Sign Out</b></a></h3>
-</div>
+    <div class="page-header">
+        <h1>My Tasks</h1>
+    </div>
+    <div class="list-group">
+    {% for task in tasks %}
+        <a href="{{ url_for('tasks.load_task', task_id=task._id) }}" class="list-group-item">
+            <h4 class="list-group-item-heading">{{ task.title }}</h4>
+            <p class="list-group-item-text">{{ task.description }}</p>
+        </a>
+    {% endfor %}
+    </div>
 {% endblock %}

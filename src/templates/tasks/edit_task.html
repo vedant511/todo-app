@@ -1,10 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
+    <div class="page-header">
+        <h1>Edit Task</h1>
+    </div>
+    <div class="form-size">
+        <form method="post">
 
-</body>
-</html>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" required pattern=".*\S+.*" title="This field is required" placeholder="{{ task.title }}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" name="description" required pattern=".*\S+.*" title="This field is required" value="{{ task.description }}">
+        </div>
+
+        <div class="form-group">
+            <label for="due-date">Due Date</label>
+            <input type="datetime-local" class="form-control" id="due-date" name="due-date" required pattern=".*\S+.*" title="This field is required" value="{{ task.timeDue.strftime('%Y-%m-%dT%H:%M') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="cat">Category</label>
+            <input type="text" class="form-control" id="cat" name="cat" required pattern=".*\S+.*" title="This field is required" value="{{ task.group }}">
+        </div>
+
+        <div class="form-group">
+            <label for="priority">Priority</label>
+            <select class="form-control" id="priority" name="priority">
+                {% if task.priority == "low" %}
+                <option value="low" selected="selected">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                {% elif task.priority == "medium" %}
+                <option value="low">Low</option>
+                <option value="medium" selected="selected">Medium</option>
+                <option value="high">High</option>
+                {% else %}
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high" selected="selected">High</option>
+                {% endif %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="remind-at">Remind At</label>
+            <input type="datetime-local" class="form-control" id="remind-at" name="remind-at" required pattern=".*\S+.*" title="This field is required" value="{{ task.timeRemind.strftime('%Y-%m-%dT%H:%M') }}">
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <label for="freq">Reminder Frequency</label>
+                <input type="text" class="form-control" id="freq" name="freq" required pattern=".*\S+.*" title="This field is required" value="{{ task.freq }}">
+                <select class="form-control" id="freq-time" name="freq-time">
+                    {% if task.timeframe == "min" %}
+                    <option value="min" selected="selected">Minute(s)</option>
+                    <option value="hr">Hour(s)</option>
+                    <option value="day">Day(s)</option>
+                    {% elif task.timeframe == "hr" %}
+                    <option value="min">Minute(s)</option>
+                    <option value="hr" selected="selected">Hour(s)</option>
+                    <option value="day">Day(s)</option>
+                    {% else %}
+                    <option value="min">Minute(s)</option>
+                    <option value="hr">Hour(s)</option>
+                    <option value="day" selected="selected">Day(s)</option>
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success" name="action" value="update"><span class="glyphicon glyphicon-plus"></span> Update</button>
+        <button type="submit" class="btn btn-danger" name="action" value="cancel"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </form>
+    </div>
+{% endblock %}

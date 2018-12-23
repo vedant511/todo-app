@@ -1,5 +1,6 @@
 from src.common.database import Database
 import src.models.tasks.errors as TaskErrors
+from bson.objectid import ObjectId
 import re
 import datetime
 
@@ -29,15 +30,16 @@ class Task(object):
         if time_remind >= time_due:
             raise TaskErrors.TimeFrameError('Reminder time is after the due time')
 
+        time_due = datetime.datetime.strptime(time_due, '%Y-%m-%dT%H:%M')
+        time_remind = datetime.datetime.strptime(time_remind, '%Y-%m-%dT%H:%M')
         new_task = cls(user_id, title, description, time_due, priority, time_remind, reminder_freq, group)
         Database.insert('tasks', new_task.json())
         return True
 
     @classmethod
     def get_by_task_id(cls, task_id):
-        data = Database.find_one('tasks', {'_id': task_id})
-        if data is not None:
-            return cls(**data)
+        data = Database.find_one('tasks', {'_id': ObjectId(task_id)})
+        return data
 
     @staticmethod
     def get_by_user_id(user_id):
@@ -51,14 +53,15 @@ class Task(object):
 
     @staticmethod
     def delete_single(task_id):
-        return Database.delete_one('tasks', {'_id': task_id})
+        return Database.delete_one('tasks', {'_id': ObjectId(task_id)})
 
     @staticmethod
     def delete_multiple(del_query):
         return Database.delete_many('tasks', del_query)
 
     @staticmethod
-    def edit_task(filter_query, edit_query):
+    def edit_task(task_id, edit_query):
+        filter_query = {'_id': ObjectId(task_id)}
         return Database.update_one('tasks', filter_query, edit_query)
 
     def json(self):
