@@ -1,7 +1,7 @@
 import pymongo
 from pymongo import MongoClient
-# import config as cfg  # Uncomment in Production
-import instance.config as cfg  # Uncomment in Development
+import config as cfg  # Uncomment in Production
+# import instance.config as cfg  # Uncomment in Development
 
 
 class Database(object):
@@ -10,8 +10,8 @@ class Database(object):
 
     @staticmethod
     def initialize():
-        # client = MongoClient(Database.URI)
-        client = MongoClient('localhost', 27017)
+        client = MongoClient(Database.URI)
+        # client = MongoClient('localhost', 27017)
         Database.DATABASE = client['test']
 
     @staticmethod
