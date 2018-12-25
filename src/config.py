@@ -1,4 +1,7 @@
+import os
+
 DEBUG = False
 BCRYPT_LOG_ROUNDS = 12
-DATABASE_URI = "Enter your mongo cluster's connection URI string here"
-SECRET_KEY = "Enter your unique secret key here to maintain clint side sessions"
+DATABASE_URI = os.environ.get('DATABASE_URI')
+SECRET_KEY = os.environ.get('SECRET_KEY')
+COLLECTION = os.environ.get('COLLECTION')

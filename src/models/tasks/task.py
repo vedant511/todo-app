@@ -24,9 +24,6 @@ class Task(object):
 
     @classmethod
     def create_task(cls, user_id, title, description, time_due, priority, time_remind, reminder_freq, group):
-        if title == '' or description == '' or group == '' or time_remind == '' or time_due == '':
-            raise TaskErrors.EmptyFieldsError('All fields are required')
-
         if time_remind >= time_due:
             raise TaskErrors.TimeFrameError('Reminder time is after the due time')
 

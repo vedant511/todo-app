@@ -1,18 +1,19 @@
 import pymongo
 from pymongo import MongoClient
-# import config as cfg  # Uncomment in Production
-import instance.config as cfg  # Uncomment in Development
+import src.config as cfg  # Uncomment in Production
+# import instance.config as cfg  # Uncomment in Development
 
 
 class Database(object):
     DATABASE = None
     URI = cfg.DATABASE_URI
+    COLLECTION = cfg.COLLECTION
 
     @staticmethod
     def initialize():
-        # client = MongoClient(Database.URI)
-        client = MongoClient('localhost', 27017)
-        Database.DATABASE = client['test']
+        client = MongoClient(Database.URI)
+        # client = MongoClient('localhost', 27017)
+        Database.DATABASE = client[Database.COLLECTION]
 
     @staticmethod
     def insert(collection, data):
