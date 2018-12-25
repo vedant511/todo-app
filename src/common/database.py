@@ -15,6 +15,7 @@ class Database(object):
         # client = MongoClient('localhost', 27017)
         Database.DATABASE = client[Database.COLLECTION]
 
+
     @staticmethod
     def insert(collection, data):
         if type(data) == dict:
