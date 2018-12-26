@@ -3,7 +3,7 @@ from src.common.database import Database
 
 __author__ = 'Vedant Sharma'
 
-app = Flask(__name__, instance_relative_config=True)
+app = Flask(__name__)
 app.config.from_object('src.config')  # Uncomment this in Production
 # app.config.from_pyfile('config.py')  # Uncomment this during development and staging
 
